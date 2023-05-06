@@ -16,6 +16,8 @@ import ResetPassword from "./Components/ResetPassword/ResetPassword";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import Search from "./Components/Search/Search";
 import NotFound from "./Components/NotFound/NotFound";
+import Dashboard from "./Components/dashboard";
+import { ChakraProvider } from '@chakra-ui/react'
 
 function App() {
   const dispatch = useDispatch();
@@ -69,6 +71,10 @@ function App() {
         <Route
           path="/user/:id"
           element={isAuthenticated ? <UserProfile /> : <Login />}
+        />
+        <Route
+          path="/dashboard"
+          element={isAuthenticated ? <Dashboard /> : <Login />}
         />
 
         <Route path="search" element={<Search />} />

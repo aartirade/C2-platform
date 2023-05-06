@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { Provider as AlertProvider, positions, transitions } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const options = {
   position: positions.BOTTOM_CENTER,
@@ -15,7 +16,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <AlertProvider template={AlertTemplate} {...options}>
-        <App />
+        <ChakraProvider>
+          <App />
+        </ChakraProvider>
       </AlertProvider>
     </Provider>
   </React.StrictMode>,
