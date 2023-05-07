@@ -2,10 +2,21 @@ body{
   background-color: #1167b1 !important;
 }
 
+.b1{
+  /* background-color: red; */
+  /* width: 500px; */
+}
+
+.b1 {
+  display: flex;
+  justify-content: space-between;
+}
+
 .logo1{
   width: 5vw;
   height: 10vh;
   margin: 0vmax 0.5vmax;
+  /* border: 2px solid green; */
  
 }
 

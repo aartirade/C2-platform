@@ -13,6 +13,7 @@ import {
   AccountBalance,
   AccountBalanceOutlined,
 } from "@mui/icons-material";
+import ThreePIcon from "@mui/icons-material/ThreeP";
 
 import { Typography } from "@mui/material";
 import { useSelector } from "react-redux";
@@ -65,6 +66,13 @@ const Header = () => {
               <AccountBalance style={{ color: "white" }} />
             ) : (
               <AccountBalanceOutlined />
+            )}
+          </Link>
+          <Link to="/aboutus" onClick={() => setTab("/aboutus")}>
+            {tab === "/aboutus" ? (
+              <ThreePIcon style={{ color: "white" }} />
+            ) : (
+              <ThreePIcon />
             )}
           </Link>
         </div>
