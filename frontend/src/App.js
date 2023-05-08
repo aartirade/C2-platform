@@ -17,7 +17,6 @@ import UserProfile from "./Components/UserProfile/UserProfile";
 import Search from "./Components/Search/Search";
 import NotFound from "./Components/NotFound/NotFound";
 import Dashboard from "./Components/dashboard";
-import AboutUs from "./Components/aboutus"
 import { ChakraProvider } from '@chakra-ui/react'
 
 function App() {
@@ -76,11 +75,6 @@ function App() {
         <Route
           path="/dashboard"
           element={isAuthenticated ? <Dashboard /> : <Login />}
-        />
-
-        <Route
-          path="/aboutus"
-          element={isAuthenticated ? <AboutUs /> : <Login />}
         />
 
         <Route path="search" element={<Search />} />
