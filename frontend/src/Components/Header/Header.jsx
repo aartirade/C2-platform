@@ -29,7 +29,7 @@ const Header = () => {
         </div>
         <div className="b2">
           <Link to="/" onClick={() => setTab("/")}>
-            {tab === "/" ? (
+            {tab === "/home" ? (
               <Home style={{ color: "white" }} />
             ) : (
               <HomeOutlined />

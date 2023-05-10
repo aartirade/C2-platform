@@ -24,7 +24,7 @@ exports.register = async (req, res) => {
       name,
       email,
       password,
-     avatar: { public_id: myCloud.public_id, url: myCloud.secure_url }
+      avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
     });
 
     const token = await user.generateToken();
@@ -500,6 +500,46 @@ exports.getUserPosts = async (req, res) => {
     res.status(200).json({
       success: true,
       posts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+//  For updating links
+
+exports.updateDetails = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const { userImpData } = req.body;
+    // console.log("userImpData", userImpData);
+    let leetcode_url = userImpData.leetcodeProfile;
+    let github_url = userImpData.githubProfile;
+
+    if (leetcode_url.endsWith("/")) {
+      leetcode_url = leetcode_url.slice(0, -1);
+    }
+    leetcode_url = leetcode_url.substring(leetcode_url.lastIndexOf("/") + 1);
+
+    console.log(
+      fetch(`https://leetcode-stats-api.herokuapp.com/${leetcode_url}`)
+    );
+
+    // console.log("data", data);
+
+    // user.bio = req.body.bio;
+    // user.website = req.body.website;
+    // user.location = req.body.location;
+
+    // await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Details Updated",
+      user,
     });
   } catch (error) {
     res.status(500).json({

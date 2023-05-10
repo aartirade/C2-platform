@@ -14,6 +14,78 @@ const userSchema = new mongoose.Schema({
     url: String,
   },
 
+  // New Changes
+
+  prn_no: {
+    type: String,
+    required: true,
+  },
+  instituteCode: {
+    type: Number,
+    required: true,
+  },
+  departmentCode: {
+    type: String,
+    required: true,
+  },
+  gfg_easy: {
+    type: Number,
+    required: false,
+  },
+  gfg_med: {
+    type: Number,
+    required: false,
+  },
+  gfg_hard: {
+    type: Number,
+    required: false,
+  },
+  leet_easy: {
+    type: Number,
+    required: false,
+  },
+  leet_med: {
+    type: Number,
+    required: false,
+  },
+  leet_hard: {
+    type: Number,
+    required: false,
+  },
+  github_commit_count: {
+    type: Number,
+    required: false,
+  },
+  linkedin_internship_count: {
+    type: Number,
+    required: false,
+  },
+  hackerrank_all_sum_count: {
+    type: Number,
+    required: false,
+  },
+
+  mobile_no: {
+    type: Number,
+    required: false,
+  },
+
+  // This is ref
+
+  institute: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Institute",
+    },
+  ],
+
+  department: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
+    },
+  ],
+
   email: {
     type: String,
     required: [true, "Please enter an email"],

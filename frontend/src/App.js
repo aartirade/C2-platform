@@ -17,7 +17,8 @@ import UserProfile from "./Components/UserProfile/UserProfile";
 import Search from "./Components/Search/Search";
 import NotFound from "./Components/NotFound/NotFound";
 import Dashboard from "./Components/dashboard";
-import { ChakraProvider } from '@chakra-ui/react'
+import ShowUserInputModel from "./Components/ShowUserInputModel/ShowUserInputModel";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,7 +33,11 @@ function App() {
       {isAuthenticated && <Header />}
 
       <Routes>
-        <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
+        <Route
+          path="/"
+          element={isAuthenticated ? <ShowUserInputModel /> : <Login />}
+        />
+        <Route path="/home" element={isAuthenticated ? <Home /> : <Login />} />
         <Route
           path="/account"
           element={isAuthenticated ? <Account /> : <Login />}
