@@ -12,10 +12,11 @@ import {
 } from "@chakra-ui/react";
 
 import { StudentData } from "../../data/data";
-const TableComponent = () => {
-  const [data, setData] = useState(StudentData);
+const TableComponent = ({ instituteData }) => {
+  console.log("dddd", instituteData);
+  const [data, setData] = useState([]);
   useEffect(() => {
-    setData(StudentData);
+    setData(instituteData.student);
   }, []);
   return (
     <>
@@ -34,11 +35,12 @@ const TableComponent = () => {
           <Tbody>
             {data.map((item, key) => (
               <Tr key={key} color={"whiteAlpha.900"}>
-                <Td>{item.prn}</Td>
-                <Td>{item.student_name}</Td>
-                <Td>{item.department}</Td>
-                <Td>{item.score}</Td>
-                <Td>{item.ranking}</Td>
+                {console.log("item", item)}
+                <Td>{item.institute.prn_no}</Td>
+                <Td>{item.institute.name}</Td>
+                <Td>CS</Td>
+                <Td>{Math.floor(Math.random() * 50) + 1}</Td>
+                <Td>{key + 1}</Td>
               </Tr>
             ))}
           </Tbody>

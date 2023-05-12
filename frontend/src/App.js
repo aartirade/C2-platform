@@ -18,7 +18,7 @@ import Search from "./Components/Search/Search";
 import NotFound from "./Components/NotFound/NotFound";
 import Dashboard from "./Components/dashboard";
 import ShowUserInputModel from "./Components/ShowUserInputModel/ShowUserInputModel";
-import { ChakraProvider } from "@chakra-ui/react";
+import AboutUs from "./Components/Aboutus";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ function App() {
 
         <Route
           path="/register"
-          element={isAuthenticated ? <Account /> : <Register />}
+          element={isAuthenticated ? <ShowUserInputModel /> : <Register />}
         />
 
         <Route
@@ -78,11 +78,17 @@ function App() {
           element={isAuthenticated ? <UserProfile /> : <Login />}
         />
         <Route
-          path="/dashboard"
+          path="/dashboard/:institutecode"
           element={isAuthenticated ? <Dashboard /> : <Login />}
         />
 
+        <Route
+          path="/aboutus"
+          element={isAuthenticated ? <AboutUs /> : <Login />}
+        />
+
         <Route path="search" element={<Search />} />
+        {/* <Route path="/aboutus" element={<AboutUs />} /> */}
 
         <Route path="*" element={<NotFound />} />
       </Routes>

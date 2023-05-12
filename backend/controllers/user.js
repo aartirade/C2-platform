@@ -561,3 +561,36 @@ exports.getInstitutes = async (req, res) => {
     });
   }
 };
+
+// For getting institute data
+
+exports.getInstituteStudents = async (req, res) => {
+  try {
+    const instituteStudent = await Institute.find({
+      instituteCode: req.params.institutecode,
+    })
+      .populate("student.institute")
+      .exec((err, institutes) => {
+        if (err) {
+          console.error(err);
+          // Handle the error appropriately
+          res.status(500).json({
+            success: false,
+            message: err.message,
+          });
+        } else {
+          res.status(200).json({
+            success: true,
+            message: "Got the data",
+            institutes,
+          });
+          // Do something with the retrieved data
+        }
+      });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};

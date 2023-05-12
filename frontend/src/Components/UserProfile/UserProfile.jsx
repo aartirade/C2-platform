@@ -12,7 +12,7 @@ import Loader from "../Loader/Loader";
 import Post from "../Post/Post";
 import User from "../User/User";
 
-const UserProfile = () => {
+const  UserProfile = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
 

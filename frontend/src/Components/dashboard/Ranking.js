@@ -21,7 +21,7 @@ import { DownloadIcon, HamburgerIcon } from "@chakra-ui/icons";
 import TableComponent from "./TableComponent";
 import SearchBar from "./SearchBar";
 
-const Ranking = () => {
+const Ranking = ({ instituteData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -64,7 +64,7 @@ const Ranking = () => {
         {/* This is Table Component */}
 
         <Flex width={"full"}>
-          <TableComponent />
+          <TableComponent instituteData={instituteData} />
         </Flex>
       </Flex>
 

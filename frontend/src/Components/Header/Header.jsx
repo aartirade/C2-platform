@@ -7,6 +7,8 @@ import {
   Add,
   AddOutlined,
   SearchOutlined,
+  ContactMail,
+  ContactMailOutlined,
   Search,
   AccountCircle,
   AccountCircleOutlined,
@@ -60,11 +62,22 @@ const Header = () => {
             )}
           </Link>
 
-          <Link to="/dashboard" onClick={() => setTab("/dashboard")}>
-            {tab === "/dashboard" ? (
+          <Link
+            to={`/dashboard/${user.instituteCode}`}
+            onClick={() => setTab(`/dashboard/${user.instituteCode}`)}
+          >
+            {tab === `/dashboard/${user.instituteCode}` ? (
               <AccountBalance style={{ color: "white" }} />
             ) : (
               <AccountBalanceOutlined />
+            )}
+          </Link>
+
+          <Link to={`/aboutus`} onClick={() => setTab(`/aboutus`)}>
+            {tab === `/aboutus` ? (
+              <ContactMail style={{ color: "white" }} />
+            ) : (
+              <ContactMailOutlined />
             )}
           </Link>
         </div>
