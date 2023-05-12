@@ -28,7 +28,7 @@ const Header = () => {
           <img src="\images\logo-name.png" alt="img" className="logo2" />
         </div>
         <div className="b2">
-          <Link to="/" onClick={() => setTab("/")}>
+          <Link to="/home" onClick={() => setTab("/home")}>
             {tab === "/home" ? (
               <Home style={{ color: "white" }} />
             ) : (

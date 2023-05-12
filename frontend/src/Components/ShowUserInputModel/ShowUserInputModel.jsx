@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { InstituteContext } from "../../Content/InstituteContext";
 import {
   Flex,
   useToast,
@@ -18,11 +19,14 @@ import {
 
 const ShowUserInputModel = () => {
   const toast = useToast();
-  const history = useNavigate();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
+  const { institutes } = useContext(InstituteContext);
+
   const [userImpData, setUserImpData] = useState({
     prn: "",
-    instituteCode: "",
+    instituteCode: 0,
+    departmentCode: "",
     gfgProfile: "",
     leetcodeProfile: "",
     hackerRankProfile: "",
@@ -30,10 +34,10 @@ const ShowUserInputModel = () => {
     githubProfile: "",
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log("mydata", user._id);
-    axios
-      .post(
+    try {
+      const data = await axios.post(
         `/api/v1/savedata/${user._id}`,
         { userImpData },
         {
@@ -41,26 +45,27 @@ const ShowUserInputModel = () => {
             "Content-Type": "application/json",
           },
         }
-      )
-      .then((res) => {
+      );
+
+      if (data.status === 200) {
         toast({
-          title: "Details added",
-          description: "We've added your details for you",
+          title: "Success",
+          description: "Data saved successfully",
           status: "success",
           duration: 3000,
           isClosable: true,
         });
-        history.push("/home");
-      })
-      .catch((err) => {
-        toast({
-          title: "Failed to add details",
-          description: "lease Try submitting again",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
+        navigate("/home");
+      }
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
       });
+    }
   };
 
   return (
@@ -107,13 +112,26 @@ const ShowUserInputModel = () => {
         </FormControl>
 
         <FormControl isRequired>
-          <FormLabel>Institute code</FormLabel>
-          <Input
+          <FormLabel>Institute Name</FormLabel>
+          <Select
+            onChange={(e) => {
+              setUserImpData({ ...userImpData, instituteCode: e.target.value });
+            }}
+            placeholder="Select option"
+          >
+            {institutes.map((i) => {
+              return (
+                <option value={i.instituteCode}>{i.institute_name}</option>
+              );
+            })}
+          </Select>
+          {/* <Input
+            type="number"
             onChange={(e) => {
               setUserImpData({ ...userImpData, instituteCode: e.target.value });
             }}
             placeholder="Ex.19201"
-          />{" "}
+          />{" "} */}
           {/*  this will be a dropdown */}
         </FormControl>
       </Flex>

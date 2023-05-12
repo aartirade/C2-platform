@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
+const Institute = require("../models/Institute");
 const { sendEmail } = require("../middlewares/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
@@ -514,27 +515,18 @@ exports.getUserPosts = async (req, res) => {
 exports.updateDetails = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    const { userImpData } = req.body;
-    // console.log("userImpData", userImpData);
-    let leetcode_url = userImpData.leetcodeProfile;
-    let github_url = userImpData.githubProfile;
+    console.log(req.body);
 
-    if (leetcode_url.endsWith("/")) {
-      leetcode_url = leetcode_url.slice(0, -1);
-    }
-    leetcode_url = leetcode_url.substring(leetcode_url.lastIndexOf("/") + 1);
-
-    console.log(
-      fetch(`https://leetcode-stats-api.herokuapp.com/${leetcode_url}`)
-    );
-
-    // console.log("data", data);
-
-    // user.bio = req.body.bio;
-    // user.website = req.body.website;
-    // user.location = req.body.location;
-
-    // await user.save();
+    const { prn, instituteCode, departmentCode } = req.body.userImpData;
+    const institute = await Institute.find({ instituteCode: instituteCode });
+    console.log(institute);
+    user.prn_no = prn;
+    user.instituteCode = instituteCode;
+    user.departmentCode = departmentCode;
+    // udpating the institute
+    institute[0].student.push({ institute: user._id });
+    await institute[0].save();
+    await user.save();
 
     res.status(200).json({
       success: true,
@@ -542,6 +534,27 @@ exports.updateDetails = async (req, res) => {
       user,
     });
   } catch (error) {
+    console.log("error", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// For getting institutes
+
+exports.getInstitutes = async (req, res) => {
+  // get institutes
+  try {
+    const institute = await Institute.find({});
+    res.status(200).json({
+      success: true,
+      message: "Got the data",
+      institute,
+    });
+  } catch (error) {
+    console.log("error", error);
     res.status(500).json({
       success: false,
       message: error.message,

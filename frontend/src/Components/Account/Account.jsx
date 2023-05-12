@@ -1,5 +1,6 @@
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -12,6 +13,7 @@ import "./Account.css";
 const Account = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
+  const navigate = useNavigate();
 
   const { user, loading: userLoading } = useSelector((state) => state.user);
   const { loading, error, posts } = useSelector((state) => state.myPosts);
@@ -27,6 +29,9 @@ const Account = () => {
   const logoutHandler = () => {
     dispatch(logoutUser());
     alert.success("Logged out successfully");
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
 
   const deleteProfileHandler = async () => {
@@ -80,53 +85,55 @@ const Account = () => {
         )}
       </div>
 
-
-      
       <div className="accountright">
         <Avatar
-        className="avatar"
+          className="avatar"
           src={user.avatar.url}
           sx={{ height: "9vmax", width: "9vmax" }}
         />
 
-        <Typography variant="h5"
-        style={{ color: "white", margin: "0.5vmax" }}
-        >{user.name}
+        <Typography variant="h5" style={{ color: "white", margin: "0.5vmax" }}>
+          {user.name}
         </Typography>
 
-<div className="follow">
- <div>
-        <div>
-        <Typography style={{ color: "#fff"}}
-          >{user.followers.length}</Typography>
-          <button onClick={() => setFollowersToggle(!followersToggle)}>
-            <Typography style={{ background: "#ccdbfd", padding:"0.5vmax" }}
-            >Followers</Typography>
-          </button>
-          
-        </div>
+        <div className="follow">
+          <div>
+            <div>
+              <Typography style={{ color: "#fff" }}>
+                {user.followers.length}
+              </Typography>
+              <button onClick={() => setFollowersToggle(!followersToggle)}>
+                <Typography
+                  style={{ background: "#ccdbfd", padding: "0.5vmax" }}
+                >
+                  Followers
+                </Typography>
+              </button>
+            </div>
 
-        <div>
-        <Typography style={{ color: "#fff"}}
-          >{user.following.length}</Typography>
-          <button onClick={() => setFollowingToggle(!followingToggle)}>
-            <Typography style={{ background: "#ccdbfd", padding:"0.5vmax" }}
-            >Following</Typography>
-          </button>
-         
-        </div>
+            <div>
+              <Typography style={{ color: "#fff" }}>
+                {user.following.length}
+              </Typography>
+              <button onClick={() => setFollowingToggle(!followingToggle)}>
+                <Typography
+                  style={{ background: "#ccdbfd", padding: "0.5vmax" }}
+                >
+                  Following
+                </Typography>
+              </button>
+            </div>
 
-        <div>
-        <Typography style={{ color: "#fff"}}
-          >{user.posts.length}</Typography>
-          <Typography
-           style={{ background: "#ccdbfd", padding:"0.5vmax" }}
-          >Posts</Typography>
-         
+            <div>
+              <Typography style={{ color: "#fff" }}>
+                {user.posts.length}
+              </Typography>
+              <Typography style={{ background: "#ccdbfd", padding: "0.5vmax" }}>
+                Posts
+              </Typography>
+            </div>
+          </div>
         </div>
-  </div>
-</div>
-
 
         {/* <div>
           <button onClick={() => setFollowersToggle(!followersToggle)}>
@@ -159,7 +166,7 @@ const Account = () => {
 
         <Button
           variant="text"
-          style={{ color: "white", margin: "2vmax", background:"red" }}
+          style={{ color: "white", margin: "2vmax", background: "red" }}
           onClick={deleteProfileHandler}
           disabled={deleteLoading}
         >
@@ -171,7 +178,9 @@ const Account = () => {
           onClose={() => setFollowersToggle(!followersToggle)}
         >
           <div className="DialogBox">
-            <Typography variant="h5" className="flist">Followers</Typography>
+            <Typography variant="h5" className="flist">
+              Followers
+            </Typography>
 
             {user && user.followers.length > 0 ? (
               user.followers.map((follower) => (
@@ -195,7 +204,9 @@ const Account = () => {
           onClose={() => setFollowingToggle(!followingToggle)}
         >
           <div className="DialogBox">
-            <Typography variant="h5" className="flist" >Following</Typography>
+            <Typography variant="h5" className="flist">
+              Following
+            </Typography>
 
             {user && user.following.length > 0 ? (
               user.following.map((follow) => (

@@ -2,13 +2,12 @@ const mongoose = require("mongoose");
 const departmentSchema = new mongoose.Schema({
   department_name: {
     type: String,
-    required: true,
+    required: false,
   },
   departmentCode: {
     type: string,
-    required: true,
+    required: false,
   },
 });
 
-const department = mongoose.model("department", departmentSchema);
-module.exports = department;
+module.exports = mongoose.model("Department", departmentSchema);

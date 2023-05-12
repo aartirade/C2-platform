@@ -6,6 +6,7 @@ import store from "./store";
 import { Provider as AlertProvider, positions, transitions } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import { ChakraProvider } from "@chakra-ui/react";
+import { InstituteProvider } from "./Content/InstituteContext";
 
 const options = {
   position: positions.BOTTOM_CENTER,
@@ -15,11 +16,13 @@ const options = {
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <AlertProvider template={AlertTemplate} {...options}>
-        <ChakraProvider>
-          <App />
-        </ChakraProvider>
-      </AlertProvider>
+      <InstituteProvider>
+        <AlertProvider template={AlertTemplate} {...options}>
+          <ChakraProvider>
+            <App />
+          </ChakraProvider>
+        </AlertProvider>
+      </InstituteProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

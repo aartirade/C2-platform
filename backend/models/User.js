@@ -18,15 +18,15 @@ const userSchema = new mongoose.Schema({
 
   prn_no: {
     type: String,
-    required: true,
+    required: false,
   },
   instituteCode: {
     type: Number,
-    required: true,
+    required: false,
   },
   departmentCode: {
     type: String,
-    required: true,
+    required: false,
   },
   gfg_easy: {
     type: Number,
@@ -72,19 +72,19 @@ const userSchema = new mongoose.Schema({
 
   // This is ref
 
-  institute: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Institute",
-    },
-  ],
+  // institute: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Institute",
+  //   },
+  // ],
 
-  department: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Department",
-    },
-  ],
+  // department: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Department",
+  //   },
+  // ],
 
   email: {
     type: String,
