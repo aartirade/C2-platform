@@ -14,6 +14,8 @@ import {
   AccountCircleOutlined,
   AccountBalance,
   AccountBalanceOutlined,
+  Person2,
+  Person2Outlined,
 } from "@mui/icons-material";
 
 import { Typography } from "@mui/material";
@@ -80,6 +82,22 @@ const Header = () => {
               <ContactMailOutlined />
             )}
           </Link>
+
+          <Link to="/profile" onClick={() => setTab("/profile")}>
+            {tab === "/profile" ? (
+              <Person2 style={{ color: "white" }} />
+            ) : (
+              <Person2Outlined />
+            )}
+          </Link>
+
+          {/* <Link to={`/aboutus`} onClick={() => setTab(`/aboutus`)}>
+            {tab === `/aboutus` ? (
+              <PersonIcon style={{ color: "white" }} />
+            ) : (
+              <PermIdentity />
+            )}
+          </Link> */}
         </div>
         <div className="b3">
           <Typography style={{ color: "white" }} className="usertext">

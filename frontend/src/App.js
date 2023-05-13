@@ -19,6 +19,7 @@ import NotFound from "./Components/NotFound/NotFound";
 import Dashboard from "./Components/dashboard";
 import ShowUserInputModel from "./Components/ShowUserInputModel/ShowUserInputModel";
 import AboutUs from "./Components/Aboutus";
+import Profile from "./Components/profile";
 
 function App() {
   const dispatch = useDispatch();
@@ -85,6 +86,11 @@ function App() {
         <Route
           path="/aboutus"
           element={isAuthenticated ? <AboutUs /> : <Login />}
+        />
+
+        <Route
+          path="/profile"
+          element={isAuthenticated ? <Profile /> : <Login />}
         />
 
         <Route path="search" element={<Search />} />

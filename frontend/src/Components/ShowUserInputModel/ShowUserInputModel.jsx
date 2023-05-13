@@ -179,7 +179,7 @@ const ShowUserInputModel = () => {
         </FormControl>
 
         <FormControl isRequired>
-          <FormLabel>Linked profile</FormLabel>
+          <FormLabel>Linkedin profile</FormLabel>
           <Input
             onChange={(e) => {
               setUserImpData({
