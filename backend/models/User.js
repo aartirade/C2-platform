@@ -70,6 +70,27 @@ const userSchema = new mongoose.Schema({
     required: false,
   },
 
+  gfgProfile: {
+    type: String,
+    required: false,
+  },
+
+  leetcodeProfile: {
+    type: String,
+    required: false,
+  },
+  hackerRankProfile: {
+    type: String,
+    required: false,
+  },
+  linkedProfile: {
+    type: String,
+    required: false,
+  },
+  githubProfile: {
+    type: String,
+    required: false,
+  },
   // This is ref
 
   // institute: [

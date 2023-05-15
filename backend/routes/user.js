@@ -18,6 +18,8 @@ const {
   getInstitutes,
   getInstituteStudents,
   addInstitute,
+  addDepartment,
+  getDepartments,
 } = require("../controllers/user");
 const { isAuthenticated } = require("../middlewares/auth");
 const router = express.Router();
@@ -59,6 +61,7 @@ router.route("/addinstitute").post(addInstitute);
 
 router.route("/dashboard/:institutecode").get(getInstituteStudents);
 
-
+router.route("/getdepartments").get(getDepartments);
+router.route("/adddepartment").post(addDepartment);
 
 module.exports = router;

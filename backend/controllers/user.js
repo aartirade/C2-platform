@@ -4,6 +4,7 @@ const Institute = require("../models/Institute");
 const { sendEmail } = require("../middlewares/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
+const Department = require("../models/Department");
 const { error } = require("console");
 
 exports.register = async (req, res) => {
@@ -517,13 +518,37 @@ exports.updateDetails = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     console.log(req.body);
+    // {
+    //     prn: "",
+    //     instituteCode: 0,
+    //     departmentCode: "",
+    //     gfgProfile: "",
+    //     leetcodeProfile: "",
+    //     hackerRankProfile: "",
+    //     linkedProfile: "",
+    //     githubProfile: "",
+    //   }
 
-    const { prn, instituteCode, departmentCode } = req.body.userImpData;
+    const {
+      prn,
+      instituteCode,
+      departmentCode,
+      gfgProfile,
+      leetcodeProfile,
+      hackerRankProfile,
+      linkedProfile,
+      githubProfile,
+    } = req.body.userImpData;
     const institute = await Institute.find({ instituteCode: instituteCode });
     console.log(institute);
     user.prn_no = prn;
     user.instituteCode = instituteCode;
     user.departmentCode = departmentCode;
+    user.gfgProfile = gfgProfile;
+    user.leetcodeProfile = leetcodeProfile;
+    user.hackerRankProfile = hackerRankProfile;
+    user.linkedProfile = linkedProfile;
+    user.githubProfile = githubProfile;
     // udpating the institute
     institute[0].student.push({ institute: user._id });
     await institute[0].save();
@@ -545,54 +570,42 @@ exports.updateDetails = async (req, res) => {
 
 //Adding Institute
 
-exports.addInstitute=async(req,res)=>{
-
-  try{
-
-    const {instituteCode}=req.body;
-    const data = await Institute.find({instituteCode:instituteCode});
-    if(data.length >0){  
+exports.addInstitute = async (req, res) => {
+  try {
+    const { instituteCode } = req.body;
+    const data = await Institute.find({ instituteCode: instituteCode });
+    if (data.length > 0) {
       res.status(500).json({
         success: false,
-        message:"This Institute Already Exists",
+        message: "This Institute Already Exists",
       });
+    } else {
+      var institute = new Institute(req.body);
 
-    }else{
-
-      var institute= new Institute(req.body);
-      
-    institute.save(function(error,result){
-        if (error){
-            console.log(error);
-            res.status(500).json({
-              success: false,
-              message: error.message,
-            });
-        
+      institute.save(function (error, result) {
+        if (error) {
+          console.log(error);
+          res.status(500).json({
+            success: false,
+            message: error.message,
+          });
+        } else {
+          res.status(200).json({
+            success: true,
+            message: "institute Added..",
+          });
         }
-        else{
-            res.status(200).json({
-              success: true,
-              message: "institute Added.."
-            });
-        }
-    });
-    console.log("hello..",req.body);
-
-
+      });
+      console.log("hello..", req.body);
     }
-    
-  }catch(error){
-    
+  } catch (error) {
     console.log(error);
     res.status(500).json({
       success: false,
       message: error.message,
     });
-
   }
-
-}
+};
 // For getting institutes
 
 exports.getInstitutes = async (req, res) => {
@@ -638,6 +651,58 @@ exports.getInstituteStudents = async (req, res) => {
           // Do something with the retrieved data
         }
       });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+exports.getDepartments = async (req, res) => {
+  try {
+    const departments = await Department.find({});
+    res.status(200).json({
+      success: true,
+      message: "Got the data",
+      departments,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+exports.addDepartment = async (req, res) => {
+  try {
+    const { departmentCode } = req.body.department;
+    const data = await Department.find({ departmentCode: departmentCode });
+    if (data.length > 0) {
+      res.status(500).json({
+        success: false,
+        message: "This Department Already Exists",
+      });
+    } else {
+      var department = new Department(req.body.department);
+
+      department.save(function (error, result) {
+        if (error) {
+          console.log(error);
+          res.status(500).json({
+            success: false,
+            message: error.message,
+          });
+        } else {
+          res.status(200).json({
+            success: true,
+            message: "Department Added..",
+          });
+        }
+      });
+      console.log("hello..", req.body);
+    }
   } catch (err) {
     res.status(500).json({
       success: false,
