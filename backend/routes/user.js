@@ -17,6 +17,7 @@ const {
   updateDetails,
   getInstitutes,
   getInstituteStudents,
+  addInstitute,
 } = require("../controllers/user");
 const { isAuthenticated } = require("../middlewares/auth");
 const router = express.Router();
@@ -51,6 +52,10 @@ router.route("/password/reset/:token").put(resetPassword);
 router.route("/savedata/:id").post(updateDetails);
 
 router.route("/getinstitutes").get(getInstitutes);
+
+//adding institute
+
+router.route("/addinstitute").post(addInstitute);
 
 router.route("/dashboard/:institutecode").get(getInstituteStudents);
 
