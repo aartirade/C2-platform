@@ -4,6 +4,7 @@ const Institute = require("../models/Institute");
 const { sendEmail } = require("../middlewares/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
+const { error } = require("console");
 
 exports.register = async (req, res) => {
   try {
@@ -542,6 +543,56 @@ exports.updateDetails = async (req, res) => {
   }
 };
 
+//Adding Institute
+
+exports.addInstitute=async(req,res)=>{
+
+  try{
+
+    const {instituteCode}=req.body;
+    const data = await Institute.find({instituteCode:instituteCode});
+    if(data.length >0){  
+      res.status(500).json({
+        success: false,
+        message:"This Institute Already Exists",
+      });
+
+    }else{
+
+      var institute= new Institute(req.body);
+      
+    institute.save(function(error,result){
+        if (error){
+            console.log(error);
+            res.status(500).json({
+              success: false,
+              message: error.message,
+            });
+        
+        }
+        else{
+            res.status(200).json({
+              success: true,
+              message: "institute Added.."
+            });
+        }
+    });
+    console.log("hello..",req.body);
+
+
+    }
+    
+  }catch(error){
+    
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+
+}
 // For getting institutes
 
 exports.getInstitutes = async (req, res) => {
