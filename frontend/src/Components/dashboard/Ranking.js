@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { StudentData } from "../../data/data";
-
 import {
   Flex,
   Button,
@@ -17,12 +16,18 @@ import {
   VStack,
   Text,
 } from "@chakra-ui/react";
+import { InstituteContext } from "../../Content/InstituteContext";
 import { DownloadIcon, HamburgerIcon } from "@chakra-ui/icons";
 import TableComponent from "./TableComponent";
 import SearchBar from "./SearchBar";
 
 const Ranking = ({ instituteData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [data, setData] = useState([]);
+  const { institutes, departments } = useContext(InstituteContext);
+  useEffect(() => {
+    setData(instituteData.student);
+  }, []);
 
   return (
     <>
@@ -32,14 +37,37 @@ const Ranking = ({ instituteData }) => {
           gap={"10px"}
           direction={{ base: "column", md: "row" }}
         >
-          <SearchBar name="Search" />
+          <SearchBar
+            data={data}
+            setData={setData}
+            instituteData={instituteData}
+            name="Search"
+          />
           <Flex gap={"10px"}>
-            <Select variant="filled" placeholder="Branch">
+            <Select
+              onChange={(e) => {
+                if (e.target.value === "all") {
+                  setData(instituteData.student);
+                  return;
+                }
+                setData(
+                  instituteData.student.filter((student) => {
+                    return student.institute.departmentCode === e.target.value;
+                  })
+                );
+              }}
+              variant="filled"
+              _focus={{ bg: "white", _placeholder: { color: "grey.400" } }}
+            >
               {" "}
-              <option value="option1">Computer</option>
-              <option value="option2">IT</option>
-              <option value="option3">Mechanical</option>
-              <option value="option3">Civil</option>
+              <option value="all" selected>
+                All
+              </option>
+              {departments.map((department) => (
+                <option value={department.departmentCode}>
+                  {department.department_name}
+                </option>
+              ))}
             </Select>
             <Select variant="filled" placeholder="ALL">
               {" "}
@@ -64,7 +92,7 @@ const Ranking = ({ instituteData }) => {
         {/* This is Table Component */}
 
         <Flex width={"full"}>
-          <TableComponent instituteData={instituteData} />
+          <TableComponent data={data} />
         </Flex>
       </Flex>
 

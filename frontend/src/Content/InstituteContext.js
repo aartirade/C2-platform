@@ -4,6 +4,7 @@ export const InstituteContext = createContext("");
 
 const InstituteProvider = ({ children }) => {
   const [institutes, setInstitutes] = useState([]);
+  const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,8 +15,17 @@ const InstituteProvider = ({ children }) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios.get("/api/v1/getdepartments").then((res) => {
+        setDepartments(res.data.departments);
+      });
+    };
+    fetchData();
+  }, []);
+
   return (
-    <InstituteContext.Provider value={{ institutes, setInstitutes }}>
+    <InstituteContext.Provider value={{ institutes, departments, setInstitutes }}>
       {children}
     </InstituteContext.Provider>
   );

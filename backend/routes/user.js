@@ -60,7 +60,7 @@ router.route("/getinstitutes").get(getInstitutes);
 router.route("/addinstitute").post(addInstitute);
 
 router.route("/dashboard/:institutecode").get(getInstituteStudents);
-
+//  Department Routes
 router.route("/getdepartments").get(getDepartments);
 router.route("/adddepartment").post(addDepartment);
 

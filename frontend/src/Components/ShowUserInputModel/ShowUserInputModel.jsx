@@ -21,7 +21,7 @@ const ShowUserInputModel = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-  const { institutes } = useContext(InstituteContext);
+  const { institutes, departments } = useContext(InstituteContext);
   const [timer, setTimer] = useState(3);
 
   const [userImpData, setUserImpData] = useState({
@@ -157,14 +157,29 @@ const ShowUserInputModel = () => {
                   );
                 })}
               </Select>
-              {/* <Input
-            type="number"
-            onChange={(e) => {
-              setUserImpData({ ...userImpData, instituteCode: e.target.value });
-            }}
-            placeholder="Ex.19201"
-          />{" "} */}
-              {/*  this will be a dropdown */}
+            </FormControl>
+
+            {/* For departments */}
+
+            <FormControl isRequired>
+              <FormLabel>Department</FormLabel>
+              <Select
+                onChange={(e) => {
+                  setUserImpData({
+                    ...userImpData,
+                    departmentCode: e.target.value,
+                  });
+                }}
+                placeholder="Select option"
+              >
+                {departments.map((i) => {
+                  return (
+                    <option value={i.departmentCode}>
+                      {i.department_name}
+                    </option>
+                  );
+                })}
+              </Select>
             </FormControl>
           </Flex>
           <Flex
