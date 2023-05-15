@@ -5,11 +5,13 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../Actions/User";
 import { useAlert } from "react-alert";
+import { useNavigate } from "react-router-dom";
 // import Logo from 'frontend\images';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const alert = useAlert();
 
@@ -20,6 +22,7 @@ const Login = () => {
     e.preventDefault();
 
     dispatch(loginUser(email, password));
+    navigate("/adddetails");
   };
 
   useEffect(() => {

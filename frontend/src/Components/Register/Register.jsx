@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Register.css";
 import { registerUser } from "../../Actions/User";
+import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 
 const Register = () => {
   const [name, setName] = useState("");
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("");
   const [password, setPassword] = useState("");
@@ -32,6 +34,7 @@ const Register = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(registerUser(name, email, password, avatar));
+    navigate("/adddetails");
   };
 
   useEffect(() => {
@@ -43,7 +46,7 @@ const Register = () => {
   return (
     <div className="register">
       <form className="registerForm" onSubmit={submitHandler}>
-      {/* <Typography variant="h3" className="title" >
+        {/* <Typography variant="h3" className="title" >
               C2P
       </Typography> */}
 
@@ -86,10 +89,15 @@ const Register = () => {
           Sign Up
         </Button>
 
-        <Link to="/" >
-          <Typography>Already Signed Up? <span className="reg" style={{ color: "blue" }}> Login</span></Typography>
+        <Link to="/">
+          <Typography>
+            Already Signed Up?{" "}
+            <span className="reg" style={{ color: "blue" }}>
+              {" "}
+              Login
+            </span>
+          </Typography>
         </Link>
-
       </form>
     </div>
   );

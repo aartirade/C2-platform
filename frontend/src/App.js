@@ -34,10 +34,7 @@ function App() {
       {isAuthenticated && <Header />}
 
       <Routes>
-        <Route
-          path="/"
-          element={isAuthenticated ? <ShowUserInputModel /> : <Login />}
-        />
+        <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
         <Route path="/home" element={isAuthenticated ? <Home /> : <Login />} />
         <Route
           path="/account"
@@ -91,6 +88,10 @@ function App() {
         <Route
           path="/profile"
           element={isAuthenticated ? <Profile /> : <Login />}
+        />
+        <Route
+          path="/adddetails"
+          element={isAuthenticated ? <ShowUserInputModel /> : <Login />}
         />
 
         <Route path="search" element={<Search />} />

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -22,6 +22,7 @@ const ShowUserInputModel = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const { institutes } = useContext(InstituteContext);
+  const [timer, setTimer] = useState(3);
 
   const [userImpData, setUserImpData] = useState({
     prn: "",
@@ -33,6 +34,24 @@ const ShowUserInputModel = () => {
     linkedProfile: "",
     githubProfile: "",
   });
+
+  var timeleft = 3;
+
+  useEffect(() => {
+    if (user.hasOwnProperty("prn_no")) {
+      setTimeout(() => {
+        navigate("/home");
+      }, 4000);
+      var downloadTimer = setInterval(function () {
+        if (timeleft <= 0) {
+          clearInterval(downloadTimer);
+        } else {
+          setTimer(timeleft);
+        }
+        timeleft -= 1;
+      }, 1000);
+    }
+  }, [user]);
 
   const handleSubmit = async () => {
     console.log("mydata", user._id);
@@ -79,142 +98,160 @@ const ShowUserInputModel = () => {
       backgroundColor={"white"}
     >
       {/* Heading */}
-      <Flex
-        m={4}
-        gap={3}
-        justifyContent={"center"}
-        direction={"column"}
-        alignItems={"center"}
-      >
-        <Heading fontSize={"2xl"}>Enter Your Details</Heading>
-        <Text as="p" color={"white.100"}>
-          {" "}
-          These will help us get data from you. It's a one time process{" "}
-        </Text>
-      </Flex>
 
-      <Flex
-        gap={3}
-        justifyContent={"center"}
-        direction={"row"}
-        alignItems={"center"}
-        width={"100%"}
-      >
-        <FormControl isRequired>
-          <FormLabel>Prn Number</FormLabel>
-
-          <Input
-            onChange={(e) => {
-              setUserImpData({ ...userImpData, prn: e.target.value });
-            }}
-            placeholder="Ex.7214554K"
-          />
-        </FormControl>
-
-        <FormControl isRequired>
-          <FormLabel>Institute Name</FormLabel>
-          <Select
-            onChange={(e) => {
-              setUserImpData({ ...userImpData, instituteCode: e.target.value });
-            }}
-            placeholder="Select option"
+      {user.hasOwnProperty("prn_no") ? (
+        <Flex>
+          <Heading fontSize={"2xl"}>
+            You have already filled the details. We are navigating you to home
+            page in <span id="myTimer">{timer}</span> seconds
+          </Heading>
+        </Flex>
+      ) : (
+        <>
+          <Flex
+            m={4}
+            gap={3}
+            justifyContent={"center"}
+            direction={"column"}
+            alignItems={"center"}
           >
-            {institutes.map((i) => {
-              return (
-                <option value={i.instituteCode}>{i.institute_name}</option>
-              );
-            })}
-          </Select>
-          {/* <Input
+            <Heading fontSize={"2xl"}>Enter Your Details</Heading>
+            <Text as="p" color={"white.100"}>
+              {" "}
+              These will help us get data from you. It's a one time process{" "}
+            </Text>
+          </Flex>
+
+          <Flex
+            gap={3}
+            justifyContent={"center"}
+            direction={"row"}
+            alignItems={"center"}
+            width={"100%"}
+          >
+            <FormControl isRequired>
+              <FormLabel>Prn Number</FormLabel>
+
+              <Input
+                onChange={(e) => {
+                  setUserImpData({ ...userImpData, prn: e.target.value });
+                }}
+                placeholder="Ex.7214554K"
+              />
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel>Institute Name</FormLabel>
+              <Select
+                onChange={(e) => {
+                  setUserImpData({
+                    ...userImpData,
+                    instituteCode: e.target.value,
+                  });
+                }}
+                placeholder="Select option"
+              >
+                {institutes.map((i) => {
+                  return (
+                    <option value={i.instituteCode}>{i.institute_name}</option>
+                  );
+                })}
+              </Select>
+              {/* <Input
             type="number"
             onChange={(e) => {
               setUserImpData({ ...userImpData, instituteCode: e.target.value });
             }}
             placeholder="Ex.19201"
           />{" "} */}
-          {/*  this will be a dropdown */}
-        </FormControl>
-      </Flex>
-      <Flex
-        justifyContent={"center"}
-        direction={"column"}
-        alignItems={"center"}
-        gap={3}
-        width={"100%"}
-      >
-        <FormControl isRequired>
-          <FormLabel>Gfg Profile</FormLabel>
-          <Input
-            onChange={(e) => {
-              setUserImpData({ ...userImpData, gfgProfile: e.target.value });
-            }}
-            placeholder="https://auth.geeksforgeeks.org/user/user_name"
-          />{" "}
-        </FormControl>
+              {/*  this will be a dropdown */}
+            </FormControl>
+          </Flex>
+          <Flex
+            justifyContent={"center"}
+            direction={"column"}
+            alignItems={"center"}
+            gap={3}
+            width={"100%"}
+          >
+            <FormControl isRequired>
+              <FormLabel>Gfg Profile</FormLabel>
+              <Input
+                onChange={(e) => {
+                  setUserImpData({
+                    ...userImpData,
+                    gfgProfile: e.target.value,
+                  });
+                }}
+                placeholder="https://auth.geeksforgeeks.org/user/user_name"
+              />{" "}
+            </FormControl>
 
-        <FormControl isRequired>
-          <FormLabel>Leetcode profile</FormLabel>
-          <Input
-            onChange={(e) => {
-              setUserImpData({
-                ...userImpData,
-                leetcodeProfile: e.target.value,
-              });
-            }}
-            placeholder="https://leetcode.com/user_name"
-          />{" "}
-        </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Leetcode profile</FormLabel>
+              <Input
+                onChange={(e) => {
+                  setUserImpData({
+                    ...userImpData,
+                    leetcodeProfile: e.target.value,
+                  });
+                }}
+                placeholder="https://leetcode.com/user_name"
+              />{" "}
+            </FormControl>
 
-        <FormControl>
-          <FormLabel>HackerRank profile</FormLabel>
-          <Input
-            onChange={(e) => {
-              setUserImpData({
-                ...userImpData,
-                hackerRankProfile: e.target.value,
-              });
-            }}
-            placeholder="https://www.hackerrank.com/user_name"
-          />{" "}
-        </FormControl>
+            <FormControl>
+              <FormLabel>HackerRank profile</FormLabel>
+              <Input
+                onChange={(e) => {
+                  setUserImpData({
+                    ...userImpData,
+                    hackerRankProfile: e.target.value,
+                  });
+                }}
+                placeholder="https://www.hackerrank.com/user_name"
+              />{" "}
+            </FormControl>
 
-        <FormControl isRequired>
-          <FormLabel>Linkedin profile</FormLabel>
-          <Input
-            onChange={(e) => {
-              setUserImpData({
-                ...userImpData,
-                linkedProfile: e.target.value,
-              });
-            }}
-            placeholder="https://www.linkedin.com/in/user_name"
-          />{" "}
-        </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Linkedin profile</FormLabel>
+              <Input
+                onChange={(e) => {
+                  setUserImpData({
+                    ...userImpData,
+                    linkedProfile: e.target.value,
+                  });
+                }}
+                placeholder="https://www.linkedin.com/in/user_name"
+              />{" "}
+            </FormControl>
 
-        <FormControl isRequired>
-          <FormLabel>Github Profile</FormLabel>
-          <Input
-            onChange={(e) => {
-              setUserImpData({
-                ...userImpData,
-                githubProfile: e.target.value,
-              });
-            }}
-            placeholder="https://github.com/user_name"
-          />{" "}
-        </FormControl>
-      </Flex>
+            <FormControl isRequired>
+              <FormLabel>Github Profile</FormLabel>
+              <Input
+                onChange={(e) => {
+                  setUserImpData({
+                    ...userImpData,
+                    githubProfile: e.target.value,
+                  });
+                }}
+                placeholder="https://github.com/user_name"
+              />{" "}
+            </FormControl>
+          </Flex>
 
-      <Button
-        type="submit"
-        onClick={() => {
-          handleSubmit();
-        }}
-        color="white"
-        backgroundColor={"blue.400"}
-      >
-        Submit
-      </Button>
+          <Button
+            type="submit"
+            onClick={() => {
+              handleSubmit();
+            }}
+            color="white"
+            backgroundColor={"blue.400"}
+          >
+            Submit
+          </Button>
+        </>
+      )}
     </Flex>
   );
 };
