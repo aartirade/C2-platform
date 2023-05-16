@@ -16,6 +16,7 @@ import {
   VStack,
   Text,
 } from "@chakra-ui/react";
+import { CSVLink, CSVDownload } from "react-csv";
 import { InstituteContext } from "../../Content/InstituteContext";
 import { DownloadIcon, HamburgerIcon } from "@chakra-ui/icons";
 import TableComponent from "./TableComponent";
@@ -23,11 +24,24 @@ import SearchBar from "./SearchBar";
 
 const Ranking = ({ instituteData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [csvData, setCsvData] = useState([]);
   const [data, setData] = useState([]);
   const { institutes, departments } = useContext(InstituteContext);
   useEffect(() => {
     setData(instituteData.student);
   }, []);
+
+  //
+  useEffect(() => {
+    const csvData = [];
+    data.map((student, key) => {
+      // add ranking as first element in temp object
+
+      const temp = { Ranking: key + 1, ...student.institute };
+      csvData.push(temp);
+    });
+    setCsvData(csvData);
+  }, [data]);
 
   return (
     <>
@@ -86,7 +100,11 @@ const Ranking = ({ instituteData }) => {
 
           {/* This is Download Button */}
 
-          <Button rightIcon={<DownloadIcon />}>Download</Button>
+          <Button rightIcon={<DownloadIcon />}>
+            <CSVLink data={csvData} filename={"Top_Student_Data"}>
+              Download
+            </CSVLink>
+          </Button>
         </Flex>
 
         {/* This is Table Component */}
