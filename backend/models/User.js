@@ -16,12 +16,27 @@ const userSchema = new mongoose.Schema({
 
   // New Changes
 
+  // Contains all username of links
+
+  all_links_user_names: {
+    type: Object,
+    required: false,
+  },
+
   prn_no: {
     type: String,
     required: false,
   },
   instituteCode: {
     type: Number,
+    required: false,
+  },
+  institute_name: {
+    type: String,
+    required: false,
+  },
+  department_name: {
+    type: String,
     required: false,
   },
   departmentCode: {
@@ -56,17 +71,25 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: false,
   },
+  github_public_repos: {
+    type: Number,
+    required: false,
+  },
   linkedin_internship_count: {
     type: Number,
     required: false,
   },
-  hackerrank_all_sum_count: {
+  hackerrank_badge_count: {
     type: Number,
     required: false,
   },
 
+  hackerrank_badge_names: {
+    type: Array,
+    required: false,
+  },
   mobile_no: {
-    type: Number,
+    type: String,
     required: false,
   },
 

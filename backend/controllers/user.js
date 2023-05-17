@@ -1,3 +1,4 @@
+const fetch = require("node-fetch");
 const User = require("../models/User");
 const Post = require("../models/Post");
 const Institute = require("../models/Institute");
@@ -518,15 +519,19 @@ exports.updateDetails = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     console.log(req.body);
-    // {
-    //     prn: "",
-    //     instituteCode: 0,
-    //     departmentCode: "",
-    //     gfgProfile: "",
-    //     leetcodeProfile: "",
-    //     hackerRankProfile: "",
-    //     linkedProfile: "",
-    //     githubProfile: "",
+    //   {  "userImpData":  {
+    //   "prn": "7217555K",
+    //   "instituteCode": "19201",
+    //   "departmentCode":"CS",
+    //   "gfgProfile": "https://auth.geeksforgeeks.org/user/omkarjawalkar234",
+    //   "leetcodeProfile": "https://leetcode.com/ojawalkar7/",
+    //   "hackerRankProfile": "https://www.hackerrank.com/omkarjawalkar234",
+    //   "linkedProfile": "https://www.linkedin.com/in/omkar-jawalkar-68b658208/",
+    //   "githubProfile": "https://github.com/Omkar-Jawalkar",
+    //   "mobile_no" : "9403970664",
+    //   "institute_name":"DYPIEMR",
+    //   "department_name":"Computer Engineering"
+    // }
     //   }
 
     const {
@@ -538,7 +543,48 @@ exports.updateDetails = async (req, res) => {
       hackerRankProfile,
       linkedProfile,
       githubProfile,
+      mobile_no,
+      institute_name,
+      department_name,
     } = req.body.userImpData;
+
+    // Extracting the username from the links
+
+    let ans = {};
+
+    function extractUsername(url) {
+      let username = null;
+      if (url.includes("leetcode.com")) {
+        var urlObj = new URL(url);
+        username = urlObj.pathname.split("/")[1];
+      } else if (url.includes("geeksforgeeks.org")) {
+        const urlObj = new URL(url);
+        username = urlObj.pathname.split("/")[2];
+      } else if (url.includes("practice")) {
+        var regex = /org\/([practice]+)/;
+        username = url.match(regex)[1];
+      } else if (url.includes("linkedin.com")) {
+        var regex = /in\/([a-zA-Z0-9_-]+)/;
+        username = url.match(regex)[1];
+      } else if (url.includes("www.hackerrank.com/profile")) {
+        var regex = /profile\/([a-zA-Z0-9_-]+)/;
+        username = url.match(regex)[1];
+      } else if (url.includes("www.hackerrank.com/")) {
+        var urlObj = new URL(url);
+        username = urlObj.pathname.split("/")[1];
+      } else if (url.includes("github.com")) {
+        var urlObj = new URL(url);
+        username = urlObj.pathname.split("/")[1];
+      }
+      return username;
+    }
+
+    ans.gfgUser = extractUsername(gfgProfile);
+    ans.leetcodeUser = extractUsername(leetcodeProfile);
+    ans.hackerrankUser = extractUsername(hackerRankProfile);
+    ans.linkedinUser = extractUsername(linkedProfile);
+    ans.githubUser = extractUsername(githubProfile);
+
     const institute = await Institute.find({ instituteCode: instituteCode });
     console.log(institute);
     user.prn_no = prn;
@@ -549,11 +595,57 @@ exports.updateDetails = async (req, res) => {
     user.hackerRankProfile = hackerRankProfile;
     user.linkedProfile = linkedProfile;
     user.githubProfile = githubProfile;
+    user.mobile_no = mobile_no;
+    user.institute_name = institute_name;
+    user.department_name = department_name;
     // udpating the institute
     institute[0].student.push({ institute: user._id });
     await institute[0].save();
+
+    const hackerrank = await fetch(
+      `https://flask-api-qzzy.onrender.com/hackerrank-badges/${ans.hackerrankUser}`
+    );
+    const gfg = await fetch(
+      `https://flask-api-qzzy.onrender.com/geeksforgeeks-data/${ans.gfgUser}`
+    );
+    const leetcode = await fetch(
+      `https://leetcode-stats-api.herokuapp.com/${ans.leetcodeUser}`
+    );
+    const github = await fetch(
+      `https://flask-api-qzzy.onrender.com/github-commits/${ans.githubUser}`
+    );
+
+    const hackerRankData = await hackerrank.json();
+    const gfgData = await gfg.json();
+    const leetcodeData = await leetcode.json();
+    const githubData = await github.json();
+
+    // For GFG
+    user.gfg_easy = parseInt(gfgData.easy_problems_solved[0]);
+    user.gfg_med = parseInt(gfgData.medium_problems_solved[0]);
+    user.gfg_hard = parseInt(gfgData.hard_problems_solved[0]);
+
+    // For Leetcode
+
+    user.leet_easy = leetcodeData.easySolved;
+    user.leet_med = leetcodeData.mediumSolved;
+    user.leet_hard = leetcodeData.hardSolved;
+
+    // For Hackerrank
+
+    user.hackerrank_badge_count = hackerRankData.num_badges;
+    user.hackerrank_badge_names = hackerRankData.badges;
+
+    // For Github
+
+    user.github_commit_count = githubData.num_commits;
+    user.github_public_repos = githubData.public_repos;
+
+    user.all_links_user_names = ans;
+
     await user.save();
 
+    // SSending back response
     res.status(200).json({
       success: true,
       message: "Details Updated",
@@ -703,6 +795,24 @@ exports.addDepartment = async (req, res) => {
       });
       console.log("hello..", req.body);
     }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+// getProfileWithId
+
+exports.getProfileWithId = async (req, res) => {
+  try {
+    const user = await User.find({ prn_no: req.params.id });
+    res.status(200).json({
+      success: true,
+      message: "Got the data",
+      user,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
