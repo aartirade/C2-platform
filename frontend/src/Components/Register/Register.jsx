@@ -1,18 +1,19 @@
 import { Avatar, Typography, Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Register.css";
 import { registerUser } from "../../Actions/User";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
-
+import { InstituteContext } from "../../Content/InstituteContext";
 const Register = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("");
   const [password, setPassword] = useState("");
+  const { isAdmin } = useContext(InstituteContext);
 
   const dispatch = useDispatch();
   const alert = useAlert();

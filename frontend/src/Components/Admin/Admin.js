@@ -1,6 +1,8 @@
 import React from "react";
-import { Flex, Heading, Icon } from "@chakra-ui/react";
+import { Flex, Heading, Icon, Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../../Actions/User";
 import {
   PhoneIcon,
   AddIcon,
@@ -10,6 +12,14 @@ import {
 
 const Admin = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
   return (
     <Flex
       justifyContent={"center"}
@@ -63,6 +73,9 @@ const Admin = () => {
           Manage Students
         </Flex>
       </Flex>
+      <Button onClick={logoutHandler} backgroundColor="red.500" color="white">
+        Logout
+      </Button>
     </Flex>
   );
 };

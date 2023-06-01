@@ -628,10 +628,16 @@ exports.updateDetails = async (req, res) => {
     const leetcodeData = await leetcode.json();
     const githubData = await github.json();
 
+    let over_score = 0;
+
     // For GFG
     user.gfg_easy = parseInt(gfgData.easy_problems_solved[0]);
     user.gfg_med = parseInt(gfgData.medium_problems_solved[0]);
     user.gfg_hard = parseInt(gfgData.hard_problems_solved[0]);
+
+    over_score += isNaN(user.gfg_easy) ? 0 : user.gfg_easy;
+    over_score += isNaN(user.gfg_med) ? 0 : user.gfg_med;
+    over_score += isNaN(user.gfg_hard) ? 0 : user.gfg_hard;
 
     // For Leetcode
 
@@ -639,28 +645,33 @@ exports.updateDetails = async (req, res) => {
     user.leet_med = leetcodeData.mediumSolved;
     user.leet_hard = leetcodeData.hardSolved;
 
+    over_score += isNaN(user.leet_easy) ? 0 : user.leet_easy;
+    over_score += isNaN(user.leet_med) ? 0 : user.leet_med;
+    over_score += isNaN(user.leet_hard) ? 0 : user.leet_hard;
+
     // For Hackerrank
 
     user.hackerrank_badge_count = hackerRankData.num_badges;
     user.hackerrank_badge_names = hackerRankData.badges;
 
+    over_score += isNaN(user.hackerrank_badge_count);
     // For Github
 
     user.github_commit_count = githubData.num_commits;
     user.github_public_repos = githubData.public_repos;
 
+    over_score += isNaN(user.github_commit_count)
+      ? 0
+      : user.github_commit_count;
+    over_score += isNaN(user.github_public_repos)
+      ? 0
+      : user.github_public_repos;
+
     user.all_links_user_names = ans;
 
-    user.overall_score =
-      githubData.public_repos +
-      githubData.num_commits +
-      hackerRankData.num_badges +
-      leetcodeData.hardSolved +
-      parseInt(gfgData.easy_problems_solved[0]) +
-      leetcodeData.easySolved +
-      leetcodeData.mediumSolved +
-      parseInt(gfgData.medium_problems_solved[0]) +
-      parseInt(gfgData.hard_problems_solved[0]);
+    console.log(ans);
+    user.overall_score = over_score;
+    console.log("overall_score", user.overall_score);
 
     await user.save();
 

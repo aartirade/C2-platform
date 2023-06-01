@@ -21,7 +21,8 @@ const ShowUserInputModel = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-  const { institutes, departments } = useContext(InstituteContext);
+  const { institutes, departments, setIsAdmin, isAdmin } =
+    useContext(InstituteContext);
   const [timer, setTimer] = useState(3);
 
   const [userImpData, setUserImpData] = useState({
@@ -41,6 +42,14 @@ const ShowUserInputModel = () => {
   var timeleft = 3;
 
   useEffect(() => {
+    if (user.hasOwnProperty("name")) {
+      if (user.name === "admin") {
+        setIsAdmin(true);
+        navigate("/admin");
+      } else {
+        setIsAdmin(false);
+      }
+    }
     if (user.hasOwnProperty("prn_no")) {
       setTimeout(() => {
         navigate("/home");
