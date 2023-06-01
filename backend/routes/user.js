@@ -21,6 +21,8 @@ const {
   addDepartment,
   getDepartments,
   getProfileWithId,
+  getAdminAllUsers,
+  adminDeleteProfile
 } = require("../controllers/user");
 const { isAuthenticated } = require("../middlewares/auth");
 const router = express.Router();
@@ -66,5 +68,11 @@ router.route("/getdepartments").get(getDepartments);
 router.route("/adddepartment").post(addDepartment);
 
 router.route("/profile/:id").get(getProfileWithId);
+
+// getting all users
+router.route("/admin-getallusers").get(getAdminAllUsers);
+
+// deleteprofile
+router.route("/deleteprofile/:id").post(adminDeleteProfile);
 
 module.exports = router;

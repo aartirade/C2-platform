@@ -16,18 +16,23 @@ import ResetPassword from "./Components/ResetPassword/ResetPassword";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import Search from "./Components/Search/Search";
 import NotFound from "./Components/NotFound/NotFound";
+import { InstituteContext } from "./Content/InstituteContext";
 import Dashboard from "./Components/dashboard";
 import ShowUserInputModel from "./Components/ShowUserInputModel/ShowUserInputModel";
 import AboutUs from "./Components/Aboutus";
 import Profile from "./Components/profile";
-
+import { useContext } from "react";
+import Admin from "./Components/Admin/Admin";
+import AddInstitute from "./Components/Admin/AddInstitute";
+import ManageStudents from "./Components/Admin/ManageStudents";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadUser());
   }, [dispatch]);
 
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { isAdmin } = useContext(InstituteContext);
 
   return (
     <Router>
@@ -86,7 +91,7 @@ function App() {
         />
 
         <Route
-          path="/profile"
+          path="/profile/:id"
           element={isAuthenticated ? <Profile /> : <Login />}
         />
         <Route
@@ -95,7 +100,20 @@ function App() {
         />
 
         <Route path="search" element={<Search />} />
-        {/* <Route path="/aboutus" element={<AboutUs />} /> */}
+
+        {/* Admin */}
+        <Route
+          path="/admin/"
+          element={isAdmin && isAuthenticated ? <Admin /> : <Login />}
+        />
+        <Route
+          path="/admin/addinstitute"
+          element={isAdmin && isAuthenticated ? <AddInstitute /> : <Login />}
+        />
+        <Route
+          path="/admin/managestudents"
+          element={isAdmin && isAuthenticated ? <ManageStudents /> : <Login />}
+        />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

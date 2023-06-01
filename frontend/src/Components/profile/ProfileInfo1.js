@@ -4,9 +4,7 @@ import User from "../User/User";
 import { useDispatch, useSelector } from "react-redux";
 import { Title } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-const ProfileInfo1 = () => {
-  const { user } = useSelector((state) => state.user);
-
+const ProfileInfo1 = ({ user }) => {
   return (
     <VStack m={1} spacing={4}>
       <Image

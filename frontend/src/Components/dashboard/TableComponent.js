@@ -39,16 +39,14 @@ const TableComponent = ({ data }) => {
                 <Td>
                   {" "}
                   <a
-                    onClick={() => {
-                      navigate("/profile");
-                    }}
+                    href={`/profile/${item.institute.prn_no}`}
                     style={{ cursor: "pointer", textDecoration: "underline" }}
                   >
                     {item.institute.name}{" "}
                   </a>{" "}
                 </Td>
                 <Td>{item.institute.departmentCode}</Td>
-                <Td>{Math.floor(Math.random() * 50) + 1}</Td>
+                <Td>{item.institute.overall_score}</Td>
                 <Td>
                   {key + 1 === 1 ? (
                     <Badge

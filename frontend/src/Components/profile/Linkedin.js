@@ -11,7 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const Linkedin = () => {
+const Linkedin = ({ user }) => {
   return (
     <Flex flex={1} gap={"20px"} direction={{ base: "column" }}>
       <Box rounded={"md"} background={"blue.800"} p={8}>
@@ -57,7 +57,10 @@ const Linkedin = () => {
           backgroundColor={"purple.500"}
           p={4}
         >
-          <Heading fontSize={"lg"}> Public Repo - 18 </Heading>
+          <Heading fontSize={"lg"}>
+            {" "}
+            Public Repo - {user.github_public_repos}{" "}
+          </Heading>
         </Flex>
         <Flex
           alignItems={"flex-start"}
@@ -66,7 +69,10 @@ const Linkedin = () => {
           backgroundColor={"purple.400"}
           p={4}
         >
-          <Heading fontSize={"lg"}> Total 422 Commits in 2023 </Heading>
+          <Heading fontSize={"lg"}>
+            {" "}
+            Total {user.github_commit_count} Commits in 2023{" "}
+          </Heading>
         </Flex>
       </Flex>
     </Flex>

@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const ProfileInfo2 = ({ data }) => {
+const ProfileInfo2 = ({ user }) => {
   return (
     <Flex
       boxShadow={"md"}
@@ -32,7 +32,7 @@ const ProfileInfo2 = ({ data }) => {
           justifyContent={"flex-end"}
         >
           {" "}
-          DYPIEMR{" "}
+          {user.institute_name}{" "}
         </Text>
       </Flex>
 
@@ -49,7 +49,7 @@ const ProfileInfo2 = ({ data }) => {
           justifyContent={"flex-end"}
         >
           {" "}
-          Computer{" "}
+          {user.department_name}{" "}
         </Text>
       </Flex>
 
@@ -61,7 +61,7 @@ const ProfileInfo2 = ({ data }) => {
         </Heading>
         <Text cursor={"pointer"} fontSize="lg">
           {" "}
-          72176545K{" "}
+          {user.prn_no}{" "}
         </Text>
       </Flex>
       <Flex justifyContent={"space-between"} alignItems={"start"} spacing={4}>
@@ -72,7 +72,7 @@ const ProfileInfo2 = ({ data }) => {
         </Heading>
         <Text as="ins" cursor={"pointer"} fontSize="lg">
           {" "}
-          9403970664
+          {user.mobile_no}
         </Text>
       </Flex>
     </Flex>

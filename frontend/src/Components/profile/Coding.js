@@ -1,13 +1,14 @@
 import React from "react";
 
 import { Flex, Box, Heading, Text } from "@chakra-ui/react";
-const Coding = () => {
+
+const Coding = ({ user }) => {
   return (
     <Flex flex={1} gap={"20px"} direction={{ base: "column" }}>
       <Box rounded={"md"} background={"blue.800"} p={8}>
         <Heading fontSize={"2xl"} textAlign={"center"}>
           {" "}
-          No of problems solved{" "}
+          Problems solved{" "}
         </Heading>
       </Box>
       {/* <></> */}
@@ -16,7 +17,7 @@ const Coding = () => {
         <Box flex={1} rounded={"md"} backgroundColor={"green.800"} p={4}>
           <Heading fontSize={"lg"} textAlign={"center"} m={3}>
             {" "}
-            GFG - 89{" "}
+            GFG - {user.gfg_easy + user.gfg_med + user.gfg_hard}{" "}
           </Heading>
 
           <Box flex={1} rounded={"md"} backgroundColor={"green.300"} p={3}>
@@ -26,7 +27,7 @@ const Coding = () => {
             </Heading>
             <Text display={"inline"} fontSize={"md"}>
               {" "}
-              43{" "}
+              {user.gfg_easy}{" "}
             </Text>{" "}
           </Box>
 
@@ -37,7 +38,7 @@ const Coding = () => {
             </Heading>
             <Text display={"inline"} fontSize={"md"}>
               {" "}
-              21{" "}
+              {user.gfg_med}{" "}
             </Text>{" "}
           </Box>
 
@@ -48,7 +49,7 @@ const Coding = () => {
             </Heading>
             <Text display={"inline"} fontSize={"md"}>
               {" "}
-              12{" "}
+              {user.gfg_hard}{" "}
             </Text>{" "}
           </Box>
         </Box>
@@ -65,14 +66,15 @@ const Coding = () => {
             </Heading>
             <Text display={"inline"} fontSize={"md"}>
               {" "}
-              6{" "}
+              {user.hackerrank_badge_count}{" "}
             </Text>{" "}
           </Box>
         </Box>
         <Box flex={1} rounded={"md"} backgroundColor={"green.700"} p={4}>
           <Heading fontSize={"lg"} textAlign={"center"} m={3}>
             {" "}
-            LeetCode - 79{" "}
+            LeetCode - {user.leet_easy + user.leet_med + user.leet_hard}
+            {"  "}
           </Heading>
 
           <Box flex={1} rounded={"md"} backgroundColor={"green.300"} p={3}>
@@ -82,7 +84,7 @@ const Coding = () => {
             </Heading>
             <Text display={"inline"} fontSize={"md"}>
               {" "}
-              49{" "}
+              {user.leet_easy}{" "}
             </Text>{" "}
           </Box>
 
@@ -93,7 +95,7 @@ const Coding = () => {
             </Heading>
             <Text display={"inline"} fontSize={"md"}>
               {" "}
-              11{" "}
+              {user.leet_med}{" "}
             </Text>{" "}
           </Box>
 
@@ -104,7 +106,7 @@ const Coding = () => {
             </Heading>
             <Text display={"inline"} fontSize={"md"}>
               {" "}
-              2{" "}
+              {user.leet_hard}{" "}
             </Text>{" "}
           </Box>
         </Box>
@@ -113,7 +115,14 @@ const Coding = () => {
       <Box rounded={"md"} backgroundColor={"green.800"} p={4}>
         <Heading fontSize={"lg"} textAlign={"center"}>
           {" "}
-          Total Score - 205{" "}
+          Total Score -{" "}
+          {user.leet_easy +
+            user.leet_med +
+            user.leet_hard +
+            user.gfg_easy +
+            user.gfg_med +
+            user.gfg_hard +
+            user.hackerrank_badge_count}{" "}
         </Heading>
       </Box>
     </Flex>

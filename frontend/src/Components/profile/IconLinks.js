@@ -4,8 +4,8 @@ import { Stack, Box, Text } from "@chakra-ui/react";
 import { BsLinkedin } from "react-icons/bs";
 import { AiOutlineGithub } from "react-icons/ai";
 import { MdAttachEmail } from "react-icons/md";
-import { Circle, Center } from "@chakra-ui/react";
-const IconLinks = () => {
+import { Circle, Center, Link } from "@chakra-ui/react";
+const IconLinks = ({ user }) => {
   return (
     <Stack
       direction={{ base: "row" }}
@@ -18,17 +18,26 @@ const IconLinks = () => {
       {" "}
       <Circle size="90px" bg="gray.800" color="white">
         <Center flexDirection={"column"}>
-          <MdAttachEmail fontSize={"25px"} /> <Text>Email </Text>
+          <MdAttachEmail fontSize={"25px"} />
+          <Link href={`mailto:${user.email}`} isExternal>
+            Email
+          </Link>
         </Center>
       </Circle>
       <Circle size="90px" bg="gray.800" color="white">
         <Center flexDirection={"column"}>
-          <AiOutlineGithub fontSize={"25px"} /> <Text>Github </Text>
+          <AiOutlineGithub fontSize={"25px"} />{" "}
+          <Link href={user.gfgProfile} isExternal>
+            Github
+          </Link>
         </Center>
       </Circle>
       <Circle size="90px" bg="gray.800" color="white">
         <Center flexDirection={"column"}>
-          <BsLinkedin fontSize={"25px"} /> <Text>Linkedin </Text>
+          <BsLinkedin fontSize={"25px"} />
+          <Link href={user.linkedProfile} isExternal>
+            Linked in 
+          </Link>
         </Center>
       </Circle>
     </Stack>

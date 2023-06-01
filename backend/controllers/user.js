@@ -2,6 +2,7 @@ const fetch = require("node-fetch");
 const User = require("../models/User");
 const Post = require("../models/Post");
 const Institute = require("../models/Institute");
+
 const { sendEmail } = require("../middlewares/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
@@ -579,6 +580,7 @@ exports.updateDetails = async (req, res) => {
       return username;
     }
 
+    console.log("good1");
     ans.gfgUser = extractUsername(gfgProfile);
     ans.leetcodeUser = extractUsername(leetcodeProfile);
     ans.hackerrankUser = extractUsername(hackerRankProfile);
@@ -602,19 +604,25 @@ exports.updateDetails = async (req, res) => {
     institute[0].student.push({ institute: user._id });
     await institute[0].save();
 
+    console.log("good2");
+    console.log(ans);
     const hackerrank = await fetch(
       `https://flask-api-qzzy.onrender.com/hackerrank-badges/${ans.hackerrankUser}`
     );
+    console.log("hackdone");
     const gfg = await fetch(
       `https://flask-api-qzzy.onrender.com/geeksforgeeks-data/${ans.gfgUser}`
     );
+    console.log("gfg");
     const leetcode = await fetch(
       `https://leetcode-stats-api.herokuapp.com/${ans.leetcodeUser}`
     );
+    console.log("leetdone");
     const github = await fetch(
       `https://flask-api-qzzy.onrender.com/github-commits/${ans.githubUser}`
     );
-
+    console.log("githubdone");
+    console.log("good3");
     const hackerRankData = await hackerrank.json();
     const gfgData = await gfg.json();
     const leetcodeData = await leetcode.json();
@@ -643,7 +651,20 @@ exports.updateDetails = async (req, res) => {
 
     user.all_links_user_names = ans;
 
+    user.overall_score =
+      githubData.public_repos +
+      githubData.num_commits +
+      hackerRankData.num_badges +
+      leetcodeData.hardSolved +
+      parseInt(gfgData.easy_problems_solved[0]) +
+      leetcodeData.easySolved +
+      leetcodeData.mediumSolved +
+      parseInt(gfgData.medium_problems_solved[0]) +
+      parseInt(gfgData.hard_problems_solved[0]);
+
     await user.save();
+
+    console.log("good4");
 
     // SSending back response
     res.status(200).json({
@@ -817,6 +838,115 @@ exports.getProfileWithId = async (req, res) => {
     res.status(500).json({
       success: false,
       message: err.message,
+    });
+  }
+};
+
+exports.getAdminAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json({
+      success: true,
+      message: "Got the data",
+      users,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+// delete profile from all models
+
+exports.adminDeleteProfile = async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const user = await User.findById(req.params.id);
+    // const posts = user.posts;
+    // const followers = user.followers;
+    // const following = user.following;
+    // const userId = user._id;
+
+    // // Removing Avatar from cloudinary
+    // await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+
+    // await user.remove();
+
+    // // Delete all posts of the user
+    // for (let i = 0; i < posts.length; i++) {
+    //   const post = await Post.findById(posts[i]);
+    //   await cloudinary.v2.uploader.destroy(post.image.public_id);
+    //   await post.remove();
+    // }
+
+    // // Removing User from Followers Following
+    // for (let i = 0; i < followers.length; i++) {
+    //   const follower = await User.findById(followers[i]);
+
+    //   const index = follower.following.indexOf(userId);
+    //   follower.following.splice(index, 1);
+    //   await follower.save();
+    // }
+
+    // // Removing User from Following's Followers
+    // for (let i = 0; i < following.length; i++) {
+    //   const follows = await User.findById(following[i]);
+
+    //   const index = follows.followers.indexOf(userId);
+    //   follows.followers.splice(index, 1);
+    //   await follows.save();
+    // }
+
+    // // removing all comments of the user from all posts
+    // const allPosts = await Post.find();
+
+    // for (let i = 0; i < allPosts.length; i++) {
+    //   const post = await Post.findById(allPosts[i]._id);
+
+    //   for (let j = 0; j < post.comments.length; j++) {
+    //     if (post.comments[j].user === userId) {
+    //       post.comments.splice(j, 1);
+    //     }
+    //   }
+    //   await post.save();
+    // }
+    // // removing all likes of the user from all posts
+
+    // for (let i = 0; i < allPosts.length; i++) {
+    //   const post = await Post.findById(allPosts[i]._id);
+
+    //   for (let j = 0; j < post.likes.length; j++) {
+    //     if (post.likes[j] === userId) {
+    //       post.likes.splice(j, 1);
+    //     }
+    //   }
+    //   await post.save();
+    // }
+    let data;
+    await Institute.updateOne(
+      { "student.institute": req.params.id },
+      { $pull: { student: { institute: req.params.id } } },
+      (err, result) => {
+        if (err) {
+          // Handle error
+          console.error(err);
+        } else {
+          console.log("Institute deleted successfully:", result);
+        }
+      }
+    );
+    res.status(200).json({
+      success: true,
+      student: data,
+      user: user,
+    });
+    console.log(data);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
     });
   }
 };

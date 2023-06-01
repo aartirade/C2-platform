@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema({
     required: false,
   },
 
+  overall_score :{
+    type:Number,
+    required: false
+  },
+
   prn_no: {
     type: String,
     required: false,

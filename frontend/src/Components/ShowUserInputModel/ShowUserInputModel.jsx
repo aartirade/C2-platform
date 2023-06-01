@@ -33,6 +33,9 @@ const ShowUserInputModel = () => {
     hackerRankProfile: "",
     linkedProfile: "",
     githubProfile: "",
+    mobile_no: "9403970664",
+    institute_name: "",
+    department_name: "",
   });
 
   var timeleft = 3;
@@ -55,6 +58,7 @@ const ShowUserInputModel = () => {
 
   const handleSubmit = async () => {
     console.log("mydata", user._id);
+    console.log("userImpData", userImpData);
     try {
       const data = await axios.post(
         `/api/v1/savedata/${user._id}`,
@@ -144,10 +148,25 @@ const ShowUserInputModel = () => {
               <FormLabel>Institute Name</FormLabel>
               <Select
                 onChange={(e) => {
+                  let inst_name = "";
+
+                  for (let i = 0; i <= institutes.length; i++) {
+                    if (
+                      institutes[i].instituteCode === parseInt(e.target.value)
+                    ) {
+                      inst_name = institutes[i].institute_name;
+                      break;
+                    }
+                  }
+                  console.log("inst_name", inst_name);
+                  console.log("e.target.value", e.target.value);
                   setUserImpData({
                     ...userImpData,
                     instituteCode: e.target.value,
+                    institute_name: inst_name,
                   });
+
+                  console.log(userImpData);
                 }}
                 placeholder="Select option"
               >
@@ -165,9 +184,17 @@ const ShowUserInputModel = () => {
               <FormLabel>Department</FormLabel>
               <Select
                 onChange={(e) => {
+                  let dept_name = "";
+                  for (let i = 0; i < departments.length; i++) {
+                    if (departments[i].departmentCode === e.target.value) {
+                      dept_name = departments[i].department_name;
+                      break;
+                    }
+                  }
                   setUserImpData({
                     ...userImpData,
                     departmentCode: e.target.value,
+                    department_name: dept_name,
                   });
                 }}
                 placeholder="Select option"

@@ -26,7 +26,21 @@ const Dashboard = () => {
         .get(`/api/v1/dashboard/${user.instituteCode}`)
         .then((res) => {
           const { data } = res;
-          setInstituteData(data.institutes[0]);
+          console.log("insdata", data.institutes[0]);
+          let final_data = data.institutes[0];
+          // // sorting logic
+          let objectsArray = data.institutes[0].student;
+          const compareByOverallScore = (a, b) => {
+            if (a.institute.overall_score > b.institute.overall_score) {
+              return -1;
+            } else if (a.institute.overall_score < b.institute.overall_score) {
+              return 1;
+            }
+            return 0;
+          };
+          objectsArray.sort(compareByOverallScore);
+          final_data.student = objectsArray;
+          setInstituteData(final_data);
         })
         .catch((err) => {
           console.log(err);
